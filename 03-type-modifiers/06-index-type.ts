@@ -73,7 +73,7 @@ type PeopleGroupedByName = {
 };
 
 const groupedPeople2: PeopleGroupedByName = {
-    asdf: [{ name: "John", skillLevel: "Beginner" }];
+    asdf: [{ name: "John", skillLevel: "Beginner" }],
 };
 
 // In this case we could also just use the string type
