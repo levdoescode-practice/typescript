@@ -1,7 +1,6 @@
 // Display/UI
 
 import {
-    TILE_STATUSES,
     createBoard,
     markTile,
     revealTile,
