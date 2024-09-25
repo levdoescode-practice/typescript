@@ -9,6 +9,7 @@ type Coord = {
 
 type Tile = Coord & {
     mine: boolean;
+    adjacentMinesCount?: number;
     status: string;
 };
 
@@ -60,7 +61,7 @@ export function markTile(board: Board, { x, y }: Coord) {
     }
 }
 
-function replaceTile(board, position, newTile) {
+function replaceTile(board: Board, position: Coord, newTile: Tile) {
     return board.map((row, x) => {
         return row.map((tile, y) => {
             if (positionMatch(position, { x, y })) {
@@ -71,7 +72,7 @@ function replaceTile(board, position, newTile) {
     });
 }
 
-export function revealTile(board, { x, y }) {
+export function revealTile(board: Board, { x, y }: Coord): Board {
     const tile = board[x][y];
     if (tile.status !== "hidden") {
         return board;
