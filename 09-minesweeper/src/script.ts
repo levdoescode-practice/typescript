@@ -10,6 +10,7 @@ import {
     positionMatch,
     markedTilesCount,
     Tile,
+    Coord,
 } from "./minesweeper.ts";
 
 const BOARD_SIZE = 10;
@@ -90,11 +91,11 @@ boardElement.addEventListener("contextmenu", (e) => {
     render();
 });
 
-boardElement.style.setProperty("--size", BOARD_SIZE);
+boardElement.style.setProperty("--size", BOARD_SIZE.toString());
 render();
 
 function listMinesLeft() {
-    minesLeftText.textContent = NUMBER_OF_MINES - markedTilesCount(board);
+    minesLeftText.textContent = `${NUMBER_OF_MINES - markedTilesCount(board)}`;
 }
 
 function checkGameEnd() {
@@ -113,22 +114,22 @@ function checkGameEnd() {
         messageText.textContent = "You Lose";
         board.forEach((row) => {
             row.forEach((tile) => {
-                if (tile.status === TILE_STATUSES.MARKED) board = markTile(board, tile);
+                if (tile.status === "marked") board = markTile(board, tile);
                 if (tile.mine) board = revealTile(board, tile);
             });
         });
     }
 }
 
-function stopProp(e) {
+function stopProp(e: MouseEvent) {
     e.stopImmediatePropagation();
 }
 
-function getMinePositions(boardSize, numberOfMines) {
-    const positions = [];
+function getMinePositions(boardSize: number, numberOfMines: number) {
+    const positions: Coord[] = [];
 
     while (positions.length < numberOfMines) {
-        const position = {
+        const position: Coord = {
             x: randomNumber(boardSize),
             y: randomNumber(boardSize),
         };
@@ -141,6 +142,6 @@ function getMinePositions(boardSize, numberOfMines) {
     return positions;
 }
 
-function randomNumber(size) {
+function randomNumber(size: number) {
     return Math.floor(Math.random() * size);
 }
