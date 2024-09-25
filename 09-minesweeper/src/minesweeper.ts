@@ -7,7 +7,7 @@ type Coord = {
     y: number;
 };
 
-type Tile = Coord & {
+export type Tile = Coord & {
     mine: boolean;
     adjacentMinesCount?: number;
     status: TileStatus;
