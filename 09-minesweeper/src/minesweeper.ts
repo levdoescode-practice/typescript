@@ -15,7 +15,7 @@ export type Tile = Coord & {
 
 type Board = Tile[][];
 
-export const TILE_STATUSES = ["hidden", "mine", "number", "marked"] as const;
+const TILE_STATUSES = ["hidden", "mine", "number", "marked"] as const;
 
 /*
 export const TILE_STATUSES = {
