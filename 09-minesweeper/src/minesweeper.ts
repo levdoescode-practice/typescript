@@ -1,5 +1,7 @@
 import { times, range } from "lodash/fp";
 
+type TileStatus = typeof TILE_STATUSES[number];
+
 type Coord = {
     x: number;
     y: number;
@@ -12,12 +14,19 @@ type Tile = Coord & {
 
 type Board = Tile[][];
 
+export const TILE_STATUSES = ["hidden", "mine", "number", "marked"] as const;
+
+/*
 export const TILE_STATUSES = {
     HIDDEN: "hidden",
     MINE: "mine",
     NUMBER: "number",
     MARKED: "marked",
 };
+"hidden";
+*/
+// This was done to get autocomplete in JavaScript
+// It is not necessary in TypeScript
 
 export function createBoard(boardSize: number, minePositions: Coord[]): Board {
     return times((x) => {
@@ -26,28 +35,28 @@ export function createBoard(boardSize: number, minePositions: Coord[]): Board {
                 x,
                 y,
                 mine: minePositions.some((minePosition) => positionMatch(minePosition, { x, y })),
-                status: TILE_STATUSES.HIDDEN,
+                status: "hidden",
             };
         }, boardSize);
     }, boardSize);
 }
 
-export function markedTilesCount(board) {
+export function markedTilesCount(board: Board) {
     return board.reduce((count, row) => {
-        return count + row.filter((tile) => tile.status === TILE_STATUSES.MARKED).length;
+        return count + row.filter((tile) => tile.status === "marked").length;
     }, 0);
 }
 
-export function markTile(board, { x, y }) {
+export function markTile(board: Board, { x, y }: Coord) {
     const tile = board[x][y];
-    if (tile.status !== TILE_STATUSES.HIDDEN && tile.status !== TILE_STATUSES.MARKED) {
+    if (tile.status !== "hidden" && tile.status !== "marked") {
         return board;
     }
 
-    if (tile.status === TILE_STATUSES.MARKED) {
-        return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.HIDDEN });
+    if (tile.status === "marked") {
+        return replaceTile(board, { x, y }, { ...tile, status: "hidden" });
     } else {
-        return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MARKED });
+        return replaceTile(board, { x, y }, { ...tile, status: "marked" });
     }
 }
 
@@ -64,12 +73,12 @@ function replaceTile(board, position, newTile) {
 
 export function revealTile(board, { x, y }) {
     const tile = board[x][y];
-    if (tile.status !== TILE_STATUSES.HIDDEN) {
+    if (tile.status !== "hidden") {
         return board;
     }
 
     if (tile.mine) {
-        return replaceTile(board, { x, y }, { ...tile, status: TILE_STATUSES.MINE });
+        return replaceTile(board, { x, y }, { ...tile, status: "mine" });
     }
 
     const adjacentTiles = nearbyTiles(board, tile);
@@ -77,7 +86,7 @@ export function revealTile(board, { x, y }) {
     const newBoard = replaceTile(
         board,
         { x, y },
-        { ...tile, status: TILE_STATUSES.NUMBER, adjacentMinesCount: mines.length }
+        { ...tile, status: "number", adjacentMinesCount: mines.length }
     );
     if (mines.length === 0) {
         return adjacentTiles.reduce((b, t) => {
@@ -91,8 +100,8 @@ export function checkWin(board) {
     return board.every((row) => {
         return row.every((tile) => {
             return (
-                tile.status === TILE_STATUSES.NUMBER ||
-                (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED))
+                tile.status === "number" ||
+                (tile.mine && (tile.status === "hidden" || tile.status === "marked"))
             );
         });
     });
@@ -101,7 +110,7 @@ export function checkWin(board) {
 export function checkLose(board) {
     return board.some((row) => {
         return row.some((tile) => {
-            return tile.status === TILE_STATUSES.MINE;
+            return tile.status === "mine";
         });
     });
 }
