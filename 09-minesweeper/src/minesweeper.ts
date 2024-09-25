@@ -10,7 +10,7 @@ type Coord = {
 type Tile = Coord & {
     mine: boolean;
     adjacentMinesCount?: number;
-    status: string;
+    status: TileStatus;
 };
 
 type Board = Tile[][];
@@ -97,7 +97,7 @@ export function revealTile(board: Board, { x, y }: Coord): Board {
     return newBoard;
 }
 
-export function checkWin(board) {
+export function checkWin(board: Board) {
     return board.every((row) => {
         return row.every((tile) => {
             return (
@@ -108,7 +108,7 @@ export function checkWin(board) {
     });
 }
 
-export function checkLose(board) {
+export function checkLose(board: Board) {
     return board.some((row) => {
         return row.some((tile) => {
             return tile.status === "mine";
@@ -120,7 +120,7 @@ export function positionMatch(a: Coord, b: Coord) {
     return a.x === b.x && a.y === b.y;
 }
 
-function nearbyTiles(board, { x, y }) {
+function nearbyTiles(board: Board, { x, y }: Coord) {
     const offsets = range(-1, 2);
 
     return offsets
