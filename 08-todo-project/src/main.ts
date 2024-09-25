@@ -66,7 +66,7 @@ function renderNewTodo(todo: Todo) {
         todoItem.remove();
         todos = todos.filter(t => t.id !== todo.id);
         */
-       saveTodos();
+        saveTodos();
         console.log(todos);
     });
 
