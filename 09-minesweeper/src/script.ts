@@ -55,8 +55,16 @@ function tileToElement(tile: Tile) {
 }
 
 boardElement.addEventListener("click", (e) => {
-    if (!e.target.matches("[data-status]")) return;
-
+    // Type Guard to check if the target is an HTMLElement and if it matches the selector
+    // Type narrowing
+    if (
+        !(e.target instanceof HTMLElement) ||
+        !e.target.matches("[data-status]") ||
+        e.target.dataset.x == null ||
+        e.target.dataset.y == null
+    ) {
+        return;
+    }
     board = revealTile(board, {
         x: parseInt(e.target.dataset.x),
         y: parseInt(e.target.dataset.y),
