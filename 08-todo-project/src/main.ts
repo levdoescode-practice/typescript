@@ -48,6 +48,7 @@ function renderNewTodo(todo: Todo) {
     checkbox.classList.add("label-input");
     checkbox.addEventListener("change", (e) => {
         todo.complete = checkbox.checked;
+        saveTodos();
     });
 
     const textElement = document.createElement("span");
@@ -65,6 +66,7 @@ function renderNewTodo(todo: Todo) {
         todoItem.remove();
         todos = todos.filter(t => t.id !== todo.id);
         */
+       saveTodos();
         console.log(todos);
     });
 
