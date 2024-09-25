@@ -73,7 +73,14 @@ boardElement.addEventListener("click", (e) => {
 });
 
 boardElement.addEventListener("contextmenu", (e) => {
-    if (!e.target.matches("[data-status]")) return;
+    if (
+        !(e.target instanceof HTMLElement) ||
+        !e.target.matches("[data-status]") ||
+        e.target.dataset.x == null ||
+        e.target.dataset.y == null
+    ) {
+        return;
+    }
 
     e.preventDefault();
     board = markTile(board, {
