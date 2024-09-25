@@ -10,6 +10,7 @@ const form = document.querySelector<HTMLFormElement>("#new-todo-form")!;
 const todoInput = document.querySelector<HTMLFormElement>("#todo-input")!;
 const todoList = document.querySelector<HTMLUListElement>("#list")!;
 let todos: Todo[] = [];
+// let todos: Todo[] = loadTodos();
 
 form?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ form?.addEventListener("submit", (e) => {
     };
     todos.push(newTodo);
     renderNewTodo(newTodo);
+    saveTodos();
     todoInput.value = "";
 });
 
@@ -71,3 +73,23 @@ function renderNewTodo(todo: Todo) {
 
     todoList.appendChild(todoItem);
 }
+
+function saveTodos() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function loadTodos() {
+    const todosString = localStorage.getItem("todos");
+    if (todosString) {
+        todos = JSON.parse(todosString);
+        todos.forEach((todo) => renderNewTodo(todo));
+    }
+    console.log(todos);
+    /*
+    const value = localStorage.getItem("todos");
+    if (value == null) return [];
+    return JSON.parse(value) as Todo[];
+    */
+}
+
+loadTodos();
