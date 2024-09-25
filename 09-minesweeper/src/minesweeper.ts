@@ -2,7 +2,7 @@ import { times, range } from "lodash/fp";
 
 type TileStatus = typeof TILE_STATUSES[number];
 
-type Coord = {
+export type Coord = {
     x: number;
     y: number;
 };
