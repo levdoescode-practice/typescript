@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function Child({ name, age, children }) {
     return (
         <div>
@@ -10,3 +12,10 @@ export default function Child({ name, age, children }) {
         </div>
     );
 }
+
+Child.propTypes = {
+    name: PropTypes.string, // optional
+    age: PropTypes.number.isRequired,
+    //children: PropTypes.element // only one child (react element)
+    children: PropTypes.node, // any type of children
+};
