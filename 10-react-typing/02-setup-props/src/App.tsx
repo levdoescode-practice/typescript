@@ -1,3 +1,5 @@
+import Child from "./Child";
+
 export default function App() {
-  return <h1>Hello World!</h1>
+    return <Child name="Leo" />;
 }
