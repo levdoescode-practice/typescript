@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import Child from "./Child";
 import { Child2 } from "./Child2";
 import Child3 from "./Child3";
@@ -13,6 +14,9 @@ export default function App() {
                 <p>Children here</p>
             </Child3>
             {/* // Ok if the type is ReactNode */}
+
+            <Button outline>This is a button</Button>
+            {/* // Now we can pass any props that a button element can accept. */}
         </>
     );
 }
