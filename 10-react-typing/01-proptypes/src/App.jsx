@@ -1,7 +1,10 @@
 import "./App.css";
+import Child from "./Child";
 
-function App() {
-    return <></>;
+export default function App() {
+    return (
+        <Child name="John" age="30">
+            Hi, this is John
+        </Child>
+    );
 }
-
-export default App;
