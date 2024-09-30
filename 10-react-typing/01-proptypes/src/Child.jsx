@@ -18,4 +18,11 @@ Child.propTypes = {
     age: PropTypes.number.isRequired,
     //children: PropTypes.element // only one child (react element)
     children: PropTypes.node, // any type of children
+    test1: PropTypes.bool,
+    test2: PropTypes.array,
+    test3: PropTypes.object, // any object
+    test4: PropTypes.shape({
+        street: PropTypes.string.isRequired,
+        area_code: PropTypes.number.isRequired,
+    }).isRequired,
 };
