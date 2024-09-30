@@ -25,4 +25,15 @@ Child.propTypes = {
         street: PropTypes.string.isRequired,
         area_code: PropTypes.number.isRequired,
     }).isRequired,
+    test5: PropTypes.arrayOf(PropTypes.number),
+    test6: PropTypes.arrayOf(PropTypes.string),
+    // Array of strings or numbers
+    test7: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    // Similar to enum
+    status: PropTypes.oneOf(["active", "inactive"]),
+    // Strict shape, only has the specified props, no more, no less
+    test8: PropTypes.exact({
+        street: PropTypes.string.isRequired,
+        area_code: PropTypes.number.isRequired,
+    }),
 };
