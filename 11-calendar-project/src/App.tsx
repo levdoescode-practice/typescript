@@ -1,8 +1,10 @@
+import { Calendar } from "./components/Calendar";
+import "./styles.css";
+
 export default function App() {
-  return (
-    <div>
-      <h1>Calendar Project</h1>
-      {/* <Calendar /> */}
-    </div>
-  );
+    return (
+        <div>
+            <Calendar />
+        </div>
+    );
 }
