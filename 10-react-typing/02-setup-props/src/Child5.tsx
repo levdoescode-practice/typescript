@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { Context } from "./05-useContext";
+import { useUsers } from "./05-useContext";
 
 export default function Child() {
-    const { users } = useContext(Context);
+    const { users } = useUsers();
     return (
         <ul>
             {users.map((user) => {
