@@ -1,10 +1,20 @@
 import { useMemo, useState } from "react";
-import { startOfWeek, startOfMonth, endOfWeek, endOfMonth, eachDayOfInterval } from "date-fns";
+import {
+    startOfWeek,
+    startOfMonth,
+    endOfWeek,
+    endOfMonth,
+    eachDayOfInterval,
+    isSameMonth,
+    isBefore,
+    endOfDay,
+} from "date-fns";
 import { formatDate } from "../utils/formatDate";
+import { cc } from "../utils/cc";
 
 export function Calendar() {
     const [selectedMonth, setSelectedMonth] = useState(new Date());
-
+    console.log(selectedMonth);
     const calendarDays = useMemo(() => {
         const firstWeekStart = startOfWeek(startOfMonth(selectedMonth));
         const lastWeekEnd = endOfWeek(endOfMonth(selectedMonth));
@@ -38,10 +48,16 @@ type CalendarDayProps = {
 
 function CalendarDay({ day, showWeekName, selectedMonth }: CalendarDayProps) {
     return (
-        <div className="day non-month-day old-month-day">
+        <div
+            className={cc(
+                "day",
+                !isSameMonth(day, selectedMonth) && "non-month-day",
+                isBefore(endOfDay(day), new Date()) && "old-month-day"
+            )}
+        >
             <div className="day-header">
-                {showWeekName && <div className="week-name">{formatDate(day, {weekday: "short"})}</div>}
-                <div className="day-number">{formatDate(day, {day: "numeric"})}</div>
+                {showWeekName && <div className="week-name">{formatDate(day, { weekday: "short" })}</div>}
+                <div className="day-number">{formatDate(day, { day: "numeric" })}</div>
                 <button className="add-event-btn">+</button>
             </div>
             {/* <div className="events">
