@@ -9,6 +9,9 @@ import {
     isBefore,
     endOfDay,
     isToday,
+    subMonths,
+    format,
+    addMonths,
 } from "date-fns";
 import { formatDate } from "../utils/formatDate";
 import { cc } from "../utils/cc";
@@ -25,12 +28,24 @@ export function Calendar() {
     return (
         <div className="calendar">
             <div className="header">
-                <button className="btn">Today</button>
+                <button className="btn" onClick={() => setSelectedMonth(new Date())}>
+                    Today
+                </button>
                 <div>
-                    <button className="month-change-btn">&lt;</button>
-                    <button className="month-change-btn">&gt;</button>
+                    <button
+                        className="month-change-btn"
+                        onClick={() => setSelectedMonth((curMonth) => subMonths(curMonth, 1))}
+                    >
+                        &lt;
+                    </button>
+                    <button
+                        className="month-change-btn"
+                        onClick={() => setSelectedMonth((curMonth) => addMonths(curMonth, 1))}
+                    >
+                        &gt;
+                    </button>
                 </div>
-                <span className="month-title">June 2023</span>
+                <span className="month-title">{formatDate(selectedMonth, { month: "long", year: "numeric" })}</span>
             </div>
             <div className="days">
                 {calendarDays.map((day, index) => (
