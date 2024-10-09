@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
-type ModalProps = {
+export type ModalProps = {
     children: React.ReactNode;
     isOpen: boolean;
-    onClose: () => void
-}
+    onClose: () => void;
+};
 
 export default function Modal({ children, isOpen, onClose }: ModalProps) {
     useEffect(() => {
@@ -15,13 +15,17 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
         document.addEventListener("keydown", handler);
         return () => {
             document.removeEventListener("keydown", handler);
-        }
+        };
     }, [onClose]);
 
     if (!isOpen) return null;
 
-    return createPortal(<div className="modal">
-        <div className="overlay" onClick={onClose} ></div>
-        <div className="modal-body">{children}</div>
-    </div>, document.getElementById("#modal-container") as HTMLElement);
+    return createPortal(
+        <div className="modal">
+            <div className="overlay" onClick={onClose} />
+            <div className="modal-body">{children}</div>
+            {children}
+        </div>,
+        document.getElementById("modal-container") as HTMLElement
+    );
 }
