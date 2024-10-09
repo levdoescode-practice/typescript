@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import { UnionOmit } from "../utils/types";
 import { EVENT_COLORS } from "./useEvents";
 
-type Event = {
+export type Event = {
     id: string;
     name: string;
     // color: "red" | "blue" | "green";
@@ -36,5 +36,5 @@ export function EventsProvider({ children }: EventsProviderProps) {
         setEvents(e => e.filter(event => event.id !== eventId));
     }
 
-    return <Context.Provider value={{ events, addEvent, removeEvent }}>{children}</Context.Provider>;
+    return <Context.Provider value={{ events, addEvent, removeEvent }}>{ children }</Context.Provider>;
 };
