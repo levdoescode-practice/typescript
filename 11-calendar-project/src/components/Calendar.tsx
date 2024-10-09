@@ -123,12 +123,14 @@ type EventFormModalProps = {
     Omit<ModalProps, "children">;
 
 function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: EventFormModalProps) {
+    const isNew = event == null;
+
     return (
         <Modal {...modalProps}>
             <div className="modal-title">
-                <div>Add Event</div>
-                <small>6/8/23</small>
-                <button className="close-btn">&times;</button>
+                <div>{isNew ? "Add" : "Edit "} Event</div>
+                <small>{formatDate(date || event.date, { dateStyle: "short" })}</small>
+                <button className="close-btn" onClick={modalProps.onClose}>&times;</button>
             </div>
             <form>
                 <div className="form-group">
