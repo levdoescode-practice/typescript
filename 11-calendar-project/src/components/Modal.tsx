@@ -24,7 +24,6 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
         <div className="modal">
             <div className="overlay" onClick={onClose} />
             <div className="modal-body">{children}</div>
-            {children}
         </div>,
         document.getElementById("modal-container") as HTMLElement
     );
