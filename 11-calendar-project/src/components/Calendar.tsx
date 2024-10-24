@@ -127,6 +127,7 @@ function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: Event
     const formId = useId();
 
     const [selectedColor, setSelectedColor] = useState(event?.color || EVENT_COLORS[0]);
+    const [isAllDayChecked, setIsAllDayChecked] = useState(event?.allDay || false);
 
     return (
         <Modal {...modalProps}>
@@ -140,20 +141,38 @@ function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: Event
             <form>
                 <div className="form-group">
                     <label htmlFor={`${formId}-name`}>Name</label>
-                    <input type="text" name="name" id={`${formId}-name`} />
+                    <input required type="text" name="name" id={`${formId}-name`} />
                 </div>
                 <div className="form-group checkbox">
-                    <input type="checkbox" name="all-day" id={`${formId}-all-day`} />
+                    <input
+                        checked={isAllDayChecked}
+                        onChange={(e) => setIsAllDayChecked(e.target.checked)}
+                        type="checkbox"
+                        name="all-day"
+                        id={`${formId}-all-day`}
+                    />
                     <label htmlFor={`${formId}-all-day`}>All Day?</label>
                 </div>
                 <div className="row">
                     <div className="form-group">
                         <label htmlFor={`${formId}-start-time`}>Start Time</label>
-                        <input type="time" name="start-time" id={`${formId}-start-time`} />
+                        <input
+                            required={!isAllDayChecked}
+                            disabled={isAllDayChecked}
+                            type="time"
+                            name="start-time"
+                            id={`${formId}-start-time`}
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor={`${formId}-end-time`}>End Time</label>
-                        <input type="time" name="end-time" id={`${formId}-end-time`} />
+                        <input
+                            required={!isAllDayChecked}
+                            disabled={isAllDayChecked}
+                            type="time"
+                            name="end-time"
+                            id={`${formId}-end-time`}
+                        />
                     </div>
                 </div>
                 <div className="form-group">
