@@ -128,6 +128,7 @@ function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: Event
 
     const [selectedColor, setSelectedColor] = useState(event?.color || EVENT_COLORS[0]);
     const [isAllDayChecked, setIsAllDayChecked] = useState(event?.allDay || false);
+    const [startTime, setStartTime] = useState(event?.startTime || "");
 
     return (
         <Modal {...modalProps}>
@@ -156,6 +157,8 @@ function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: Event
                     <div className="form-group">
                         <label htmlFor={`${formId}-start-time`}>Start Time</label>
                         <input
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
                             required={!isAllDayChecked}
                             disabled={isAllDayChecked}
                             type="time"
@@ -165,10 +168,10 @@ function EventFormModal({ onSumit, onDelete, event, date, ...modalProps }: Event
                     <div className="form-group">
                         <label htmlFor={`${formId}-end-time`}>End Time</label>
                         <input
+                            min={startTime}
                             required={!isAllDayChecked}
                             disabled={isAllDayChecked}
                             type="time"
-                            name="end-time"
                             id={`${formId}-end-time`}
                         />
                     </div>
