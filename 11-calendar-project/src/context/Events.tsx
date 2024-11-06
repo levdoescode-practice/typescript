@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { UnionOmit } from "../utils/types";
 import { EVENT_COLORS } from "./useEvents";
 
@@ -25,7 +25,7 @@ type EventsProviderProps = {
 };
 
 export function EventsProvider({ children }: EventsProviderProps) {
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useLocalStorage("EVENTS", []);
 
     function addEvent(eventDetails: UnionOmit<Event, "id">) {
         setEvents((e) => [...e, { ...eventDetails, id: crypto.randomUUID() }]);
@@ -45,5 +45,40 @@ export function EventsProvider({ children }: EventsProviderProps) {
         setEvents((e) => e.filter((event) => event.id !== id));
     }
 
-    return <Context.Provider value={{ events, addEvent, removeEvent, updateEvent, deleteEvent }}>{children}</Context.Provider>;
+    return (
+        <Context.Provider value={{ events, addEvent, removeEvent, updateEvent, deleteEvent }}>
+            {children}
+        </Context.Provider>
+    );
+}
+
+//function useLocalStorage<T>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>];
+
+function useLocalStorage(key: string, initialValue: Event[]) {
+    const [eventArray, setEventArray] = useState<Event[]>(() => {
+        const storedValue = localStorage.getItem(key);
+        if (storedValue === null) {
+            return initialValue;
+        }
+        const parsed = JSON.parse(storedValue) as Event[];
+        console.log(parsed);
+        return parsed.map((event) => {
+            if (event.date instanceof Date) {
+                return event;
+            }
+            return { ...event, date: new Date(event.date) };
+        });
+        // (JSON.parse(storedValue) as Event[]).map((event) => {
+        //     if (event.date instanceof Date) {
+        //         return event;
+        //     }
+        //     return { ...event, date: new Date(event.date) };
+        // });
+    });
+
+    useEffect(() => {
+        localStorage.setItem(key, JSON.stringify(eventArray));
+    }, [key, eventArray]);
+
+    return [eventArray, setEventArray] as const;
 }
