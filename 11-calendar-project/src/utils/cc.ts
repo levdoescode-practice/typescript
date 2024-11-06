@@ -1,3 +1,3 @@
-export function cc(...classes: unknown[]) {
+export function cc(...classes: (string | boolean )[]): string {
     return classes.filter((c) => typeof c === "string").join(" ");
 }
