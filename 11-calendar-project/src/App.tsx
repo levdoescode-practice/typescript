@@ -4,10 +4,8 @@ import "./styles.css";
 
 export default function App() {
     return (
-        <div>
-            <EventsProvider>
-                <Calendar />
-            </EventsProvider>
-        </div>
+        <EventsProvider>
+            <Calendar />
+        </EventsProvider>
     );
 }
