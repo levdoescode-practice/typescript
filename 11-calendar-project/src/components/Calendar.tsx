@@ -20,6 +20,7 @@ import { EVENT_COLORS, useEvents } from "../context/useEvents";
 import Modal, { ModalProps } from "./Modal";
 import { UnionOmit } from "../utils/types";
 import { Event } from "../context/Events";
+import { OverflowContainer } from "./OverflowContainer";
 
 export function Calendar() {
     const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -77,6 +78,7 @@ type CalendarDayProps = {
 
 function CalendarDay({ day, showWeekName, selectedMonth, dayEvents }: CalendarDayProps) {
     const [isNewEventModalOpen, setIsNewEventModalOpen] = useState(false);
+    const [isViewMoreModalOpen, setIsViewMoreModalOpen] = useState(false);
     const { addEvent } = useEvents();
 
     const sortedEvents = useMemo(() => {
@@ -110,11 +112,30 @@ function CalendarDay({ day, showWeekName, selectedMonth, dayEvents }: CalendarDa
                 </button>
             </div>
             {sortedEvents.length > 0 && (
-                <div className="events">
-                    {sortedEvents.map((event) => (
-                        <CalendarEvent key={event.id} event={event} />
-                    ))}
-                </div>
+                <OverflowContainer
+                    className="events"
+                    items={sortedEvents}
+                    getKey={(event) => event.id}
+                    renderItem={(event) => <CalendarEvent event={event} />}
+                    renderOverflow={(amount) => (
+                        <>
+                            <button
+                                onClick={() => setIsViewMoreModalOpen(true)}
+                                className="events-view-more-btn"
+                            >{`+${amount} More`}</button>
+                            <ViewMoreCalendarEventsModal
+                                events={sortedEvents}
+                                isOpen={isViewMoreModalOpen}
+                                onClose={() => setIsViewMoreModalOpen(false)}
+                            />
+                        </>
+                    )}
+                />
+                // <div className="events">
+                //     {sortedEvents.map((event) => (
+                //         <CalendarEvent key={event.id} event={event} />
+                //     ))}
+                // </div>
             )}
 
             <EventFormModal
@@ -127,13 +148,41 @@ function CalendarDay({ day, showWeekName, selectedMonth, dayEvents }: CalendarDa
     );
 }
 
+type ViewMoreCalendarEventsModalProps = {
+    events: Event[];
+} & Omit<ModalProps, "children">;
+
+function ViewMoreCalendarEventsModal({ events, ...modalProps }: ViewMoreCalendarEventsModalProps) {
+    if (events.length === 0) {
+        return null;
+    }
+    return (
+        <Modal {...modalProps}>
+            <div className="modal-title">
+                <small>{formatDate(events[0].date, { dateStyle: "short" })}</small>
+                <button className="close-btn" onClick={modalProps.onClose}>
+                    &times;
+                </button>
+            </div>
+            <div className="events">
+                {events.map((event) => (
+                    <CalendarEvent event={event} key={event.id} />
+                ))}
+            </div>
+        </Modal>
+    );
+}
+
 function CalendarEvent({ event }: { event: Event }) {
     const [isEditEventModalOpen, setIsEditEventModalOpen] = useState(false);
     const { updateEvent, deleteEvent } = useEvents();
 
     return (
         <>
-            <button onClick={() => setIsEditEventModalOpen(true)} className={cc("event", event.color, event.allDay && "all-day-event")}>
+            <button
+                onClick={() => setIsEditEventModalOpen(true)}
+                className={cc("event", event.color, event.allDay && "all-day-event")}
+            >
                 {event.allDay ? (
                     <div className="event-name">{event.name}</div>
                 ) : (
@@ -149,7 +198,7 @@ function CalendarEvent({ event }: { event: Event }) {
             <EventFormModal
                 event={event}
                 isOpen={isEditEventModalOpen}
-                onSubmit={e => updateEvent(event.id, e)}
+                onSubmit={(e) => updateEvent(event.id, e)}
                 onClose={() => setIsEditEventModalOpen(false)}
                 onDelete={() => deleteEvent(event.id)}
             />
