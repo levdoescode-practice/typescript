@@ -12,7 +12,7 @@ Practice code, tests, articles, tutorials and projects using TypeScript
 </div>
 
 <div align="left">
-    <img src="./media/path-001/modal-add.png" align="center" alt="Media query medium" width="273.67" height="273.67" />
-    <img src="./media/path-001/modal-edit.png" align="center" alt="Media query small"  width="273.67" height="273.67" />
-    <img src="./media/path-001/event-overflow.png" align="center" alt="Recipe page"        width="273.67" height="273.67"  />
+    <img src="./media/path-001/modal-add.png" align="center" alt="Media query medium" width="273.90" height="273.90" />
+    <img src="./media/path-001/modal-edit.png" align="center" alt="Media query small"  width="273.90" height="273.90" />
+    <img src="./media/path-001/event-overflow.png" align="center" alt="Recipe page"        width="273.90" height="273.90"  />
 </div>
